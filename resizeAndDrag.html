@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="./jquery.js" charset="utf-8"></script>
+    <title>Document</title>
+    <style media="screen">
+        .box {
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            display: block;
+            background-color: #FFF;
+            border: 1px solid #CCCCCC;
+            box-shadow: 10px 10px 25px #ccc;
+        }
+
+        .box:hover {
+            border: 1px solid #0079a5;
+        }
+
+        .coor {
+            width: 10px;
+            height: 10px;
+            overflow: hidden;
+            cursor: se-resize;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            background-color: #09C;
+        }
+
+        .title {
+            cursor: move;
+            width: 100px;
+            height: 30px;
+            background: gray;
+        }
+    </style>
+</head>
+
+<body style="margin: 0">
+
+    <div class="box">
+        <div class="title"></div>
+        <div class="coor"></div>
+    </div>
+    <!-- <div class="box">
+        <div class="title"></div>
+        <div class="coor"></div>
+    </div> -->
+
+    <script type="text/javascript">
+        $(function () {
+            $(document).mousemove(function (e) {
+                if (!!this.move) {
+                    var posix = !document.move_target ? {
+                        'x': 0,
+                        'y': 0
+                    } : document.move_target.posix;
+                    callback = document.call_down || function () {
+                        let offset = $(this.move_target).offset();
+                        let translateX = e.pageX - posix.x;
+                        let translateY = e.pageY - posix.y;
+                        $(this.move_target).parent().css(
+                            "transform", "translate(" + translateX + "px," + translateY + "px)"
+                            // 'top': e.pageY - posix.y,
+                            // 'left': e.pageX - posix.x
+                        );
+                    };
+                    callback.call(this, e, posix);
+                }
+            }).mouseup(function (e) {
+                if (!!this.move) {
+                    var callback = document.call_up || function () {};
+                    callback.call(this, e);
+                    $.extend(this, {
+                        'move': false,
+                        'move_target': null,
+                        'call_down': false,
+                        'call_up': false
+                    });
+                }
+            });
+
+            var $box = $('.box').on('mousedown', '.title', function (e) {
+                var offset = $(this).offset();
+                this.posix = {
+                    'x': e.pageX - offset.left,
+                    'y': e.pageY - offset.top
+                };
+                $.extend(document, {
+                    'move': true,
+                    'move_target': this
+                });
+            })
+            $(".box").on('mousedown', '.coor', function (e) {
+                var fBox = $(this).parent();
+                var fTitle = $(this).siblings();
+
+                var posix = {
+                    'w': fBox.width(),
+                    'h': fBox.height(),
+                    'x': e.pageX,
+                    'y': e.pageY
+                };
+
+                $.extend(document, {
+                    'move': true,
+                    'call_down': function (e) {
+                        fBox.css({
+                            'width': Math.max(100, e.pageX - posix.x + posix.w),
+                            'height': Math.max(100, e.pageY - posix.y + posix.h)
+                        });
+                        fTitle.css({
+                            //最小100px
+                            'width': Math.max(100, e.pageX - posix.x + posix.w)
+                        })
+                    },
+                });
+                return false;
+            });
+        });
+    </script>
+</body>
+
+</html>

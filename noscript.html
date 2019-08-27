@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>测试</title>
+  <meta charset="utf-8">
+</head>
+
+<body>
+  <!-- <input id="btn" type="button" name="弹出内容" value="点击按钮"> -->
+  <p id="btn">Thank you for your order. Please print this page for your records.</p>
+</body>
+<script type="text/javascript">
+  // document.getElementById("btn").onclick = function() {
+  //   alert("该浏览器未关闭Javascript！");
+  // };
+  (function() {
+    if (document.getElementById) {
+      var pt = document.getElementById('btn');
+      console.log(pt)
+      if (pt && typeof window.print === 'function') {
+        var but = document.createElement('input');
+        but.setAttribute('type', 'button');
+        but.setAttribute('value', 'Print this now');
+        but.onclick = function() {
+          window.print();
+        };
+        pt.appendChild(but);
+      }
+    }
+  })();
+</script>
+<noscript>
+  <p>
+    该浏览器已经关闭Javascript！
+  </p>
+</noscript>
+
+</html>

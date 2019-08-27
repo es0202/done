@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>inline svg 兼容性不佳，无须加载字体，可更换icon颜色</title>
+    <style>
+        .icon {
+            fill: currentColor;
+            /*颜色生效*/
+            display: inline-block;
+            width: 1em;
+            /*宽高1em使font-size生效*/
+            height: 1em;
+        }
+
+        .green {
+            color: green;
+            font-size: 20px;
+        }
+
+        .icon-home {
+            color: red;
+            font-size: 48px;
+        }
+    </style>
+</head>
+
+<body>
+    <h3>IcoMoon</h3>
+    <svg>
+        <!-- symbol definition  NEVER draw -->
+        <symbol id="sym01" viewBox="0 0 150 110">
+            <circle cx="50" cy="50" r="40" stroke-width="8" stroke="red" fill="red" />
+            <circle cx="90" cy="60" r="40" stroke-width="8" stroke="green" fill="white" />
+        </symbol>
+        <!-- actual drawing by "use" element -->
+        <use xlink:href="#sym01" x="0" y="0" width="100" height="50" />
+        <use xlink:href="#sym01" x="0" y="50" width="75" height="38" />
+        <use xlink:href="#sym01" x="0" y="100" width="50" height="25" />
+    </svg>
+    <svg class="icon green">
+        <symbol id="icon1" viewBox="0 0 1024 1024">
+            <!--d为IcoMoon.json中对应的路径-->
+            <path d="M1024 128h-128v-128h-128v128h-128v128h128v128h128v-128h128z"></path>
+            <path
+                d="M863.862 446.028c18.436 20.478 35.192 42.53 50.022 65.972-38.292 60.522-89.274 111.922-149.436 150.296-75.594 48.218-162.89 73.704-252.448 73.704-89.56 0-176.86-25.486-252.454-73.704-60.156-38.372-111.136-89.772-149.43-150.296 38.292-60.524 89.274-111.924 149.434-150.296 3.918-2.5 7.876-4.922 11.862-7.3-9.962 27.328-15.412 56.822-15.412 87.596 0 141.382 114.616 256 256 256 141.38 0 256-114.618 256-256 0-0.692-0.018-1.38-0.024-2.072-109.284-28.138-190.298-126.63-191.932-244.31-21.026-2.38-42.394-3.618-64.044-3.618-223.318 0-416.882 130.042-512 320 95.118 189.958 288.682 320 512 320 223.31 0 416.876-130.042 512-320-17.64-35.23-38.676-68.394-62.65-99.054-29.28 17.178-62.272 28.71-97.488 33.082zM416 320c53.020 0 96 42.982 96 96 0 53.020-42.98 96-96 96s-96-42.98-96-96 42.98-96 96-96z">
+            </path>
+        </symbol>
+        <use xlink:href="#icon1"></use>
+    </svg>
+    <!--use xlink可以和symbol分开写-->
+    <svg>
+        <symbol id="icon-home" viewBox="0 0 1024 1024">
+            <path
+                d="M512 96l-512 512 96 96 96-96v416h256v-192h128v192h256v-416l96 96 96-96-512-512zM512 512c-35.346 0-64-28.654-64-64s28.654-64 64-64c35.346 0 64 28.654 64 64s-28.654 64-64 64z">
+            </path>
+        </symbol>
+    </svg>
+    <svg class="icon icon-home">
+        <use xlink:href="#icon-home"></use>
+    </svg>
+</body>
+
+</html>
